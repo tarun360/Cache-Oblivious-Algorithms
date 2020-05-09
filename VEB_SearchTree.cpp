@@ -55,16 +55,6 @@ void GetVEBLayout(TreeNode* root, int leveltop, int levelbottom, vector<TreeNode
 bool VEBSearch(TreeNode *root, int key, vector<TreeNode>& VEBarray){
   if(root==NULL)
    return false;
-  cout<<root->val<<" : "<<key<<" : ";
-  if(root->left==NULL)
-    cout<<"left is NULL : ";
-  else
-    cout<<"left is not NULL : ";
-  if(root->right==NULL)
-    cout<<"right is NULL : ";
-  else
-    cout<<"right is not NULL : ";
-  cout<<endl;
   if(root->val == key)
     return true;
   else if(key < root->val)
@@ -73,25 +63,6 @@ bool VEBSearch(TreeNode *root, int key, vector<TreeNode>& VEBarray){
     return VEBSearch(root->right,key,VEBarray);
 
 }
-
-// bool VEBSearch(TreeNode &root, int key){
-//   cout<<root.val<<" : "<<key<<" : ";
-//   if(root.left==NULL)
-//     cout<<"left is NULL : ";
-//   else
-//     cout<<"left is not NULL : ";
-//   if(root.right==NULL)
-//     cout<<"right is NULL : ";
-//   else
-//     cout<<"right is not NULL : ";
-//   cout<<endl;
-//   if(root.val == key)
-//     return true;
-//   else if(key < root.val)
-//     return VEBSearch((*root.left),key);
-//   else
-//     return VEBSearch((*root.right),key);
-// }
 
 void inorder(TreeNode* root){
   if(root==NULL)
@@ -111,20 +82,13 @@ int main()
   cin>>key;
   TreeNode* root = sortedArrayToBST(nums,0,n-1);
   int levelmax = GetHeight(root)-1;
-  cout<<"max level: "<<levelmax<<endl;
-  inorder(root);
-  cout<<endl;
   vector<TreeNode*> VEBlayout;
   GetVEBLayout(root,0,levelmax,VEBlayout);
-  for(auto it:VEBlayout)
-    cout<<it->val<<" ";
-  cout<<endl;
   vector<TreeNode> VEBarray;
   vector<TreeNode*> address(n+1,NULL);
   for(auto it:VEBlayout){
     TreeNode temp(it->val);
     VEBarray.push_back(temp);
-    //address[it->val]=(&VEBarray[(int)VEBarray.size()-1]);
   }
   for(int i=0;i<VEBarray.size();i++)
     address[VEBarray[i].val] = &VEBarray[i];
@@ -136,35 +100,11 @@ int main()
       VEBarray[i].right = address[VEBlayout[i]->right->val];
     }
   }
-  for(auto it:VEBarray){
-    cout<<"Parent: "<<it.val<<endl;
-    cout<<"Children: ";
-    if(it.left!=NULL){
-      cout<<it.left->val<<" ";
-      if(it.left->val==4){
-        if((*it.left).left!=NULL)
-          cout<<" left is not null \n";
-        else
-          cout<<" left is null \n";
-        if(it.left->right!=NULL)
-          cout<<" right is not null \n";
-        else
-          cout<<" right is null \n";
-
-      }
-    }
-    if(it.right!=NULL)
-      cout<<it.right->val<<" ";
-    cout<<endl;
-  }
 
   if(VEBSearch(addressof(VEBarray[0]),key,VEBarray)){
     cout<<"Element Found\n";
   }else
     cout<<"Element Not Found\n";
 
-  cout<<VEBarray[0].left->val<<" : "<<VEBarray[0].left<<endl;
-  cout<<VEBarray[1].val<<" : "<<&VEBarray[1]<<endl;
-  cout<<root->left<<endl;
   return 0;
 }
