@@ -124,8 +124,10 @@ int main()
   for(auto it:VEBlayout){
     TreeNode temp(it->val);
     VEBarray.push_back(temp);
-    address[it->val]=(&VEBarray[(int)VEBarray.size()-1]);
+    //address[it->val]=(&VEBarray[(int)VEBarray.size()-1]);
   }
+  for(int i=0;i<VEBarray.size();i++)
+    address[VEBarray[i].val] = &VEBarray[i];
   for(int i=0;i<n;i++){
     if(VEBlayout[i]->left!=NULL){
       VEBarray[i].left = address[VEBlayout[i]->left->val];
@@ -161,5 +163,8 @@ int main()
   }else
     cout<<"Element Not Found\n";
 
+  cout<<VEBarray[0].left->val<<" : "<<VEBarray[0].left<<endl;
+  cout<<VEBarray[1].val<<" : "<<&VEBarray[1]<<endl;
+  cout<<root->left<<endl;
   return 0;
 }

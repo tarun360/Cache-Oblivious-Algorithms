@@ -2,9 +2,8 @@
 using namespace std;
 
 int main(){
-  int a=5;
-  int *ptr=&a;
-  cout<<ptr<<endl;
-  cout<<&(*ptr)<<endl;
+  vector<int> a(5,0);
+  cout<<&a[0]<<endl;
+  cout<<a.data()<<endl;
   return 0;
 }
