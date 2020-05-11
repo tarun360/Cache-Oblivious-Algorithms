@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define SIZE 250
-#define MAXNUM 10000
+#define SIZE 8519390
+#define MAXNUM 10000000
 #define CACHELINE_SIZE 64
 int nums[SIZE];
+int K=0;
 
 typedef int (*cmp_t)(const void *, const void *);
 int intcmp(const void *ptr_a, const void *ptr_b)
@@ -45,9 +46,17 @@ Funnel* FunnelCreate(void *in, void *out, size_t nmemb, size_t size, cmp_t cmp){
 	funnel->pos = 0;
 	funnel->cmp = cmp;
 
-  if(size*nmemb > CACHELINE_SIZE){
-		size_t nmemb_left = nmemb/2;
-		size_t nmemb_right = nmemb - nmemb_left;
+  //if(size*nmemb > CACHELINE_SIZE){
+	if(nmemb > K){
+		int closest2 = (1<<(int)ilogb(nmemb));
+		size_t nmemb_left=0, nmemb_right=0;
+		if(nmemb >= 2*K){
+			nmemb_left = closest2/2;
+			nmemb_right = nmemb - nmemb_left;
+		}else{
+			nmemb_left = K;
+			nmemb_right = nmemb - nmemb_left;
+		}
 		void *out = malloc(nmemb*size);
 		funnel->ptr[0] = FunnelCreate(funnel->in, out, nmemb_left, size, cmp);
 		funnel->ptr[1] = FunnelCreate((char*)funnel->in + nmemb_left*size,(char*)out + nmemb_left*size, nmemb_right, size, cmp);
@@ -65,7 +74,7 @@ void* FunnelPop(Funnel *funnel){
 
 void FunnelFill(Funnel *funnel){
 	if (funnel->ptr[0] == NULL) {
-		qsort(funnel->in, funnel->nmemb, funnel->size, funnel->cmp);
+		// qsort(funnel->in, funnel->nmemb, funnel->size, funnel->cmp);
 		memcpy(funnel->out, funnel->in, funnel->nmemb *funnel->size);
 		return;
 	}
@@ -97,18 +106,63 @@ void FunnelFill(Funnel *funnel){
 	}
 }
 
-void Funnelsort(void *nums_address, int nmemb, size_t size, cmp_t cmp){
+void KMerge(void *nums_address, int nmemb, size_t size, cmp_t cmp){
 	void *out = malloc(size*nmemb);
 	Funnel* funnel = FunnelCreate(nums_address, out, nmemb, size, cmp);
 	FunnelFill(funnel);
 	memcpy(nums_address, out, size*nmemb);
 }
 
+void Funnelsort(void *nums, int nmemb, size_t size, cmp_t cmp){
+	if(nmemb <= 8){
+		qsort(nums,nmemb,size,cmp);
+		return;
+	}
+	int step = ilogb((double)pow(nmemb,1.0/3));
+	int step_size = 1<<step, jump=step_size;
+	void* fromhere = NULL;
+	int iters = (nmemb+step_size-1)/step_size;
+	for(int i=1;i<=iters;i++){
+		fromhere = (char*)nums+(i-1)*step_size*(size);
+		if(i==iters)
+			jump = nmemb - (i-1)*step_size;
+		Funnelsort(fromhere,jump,size,cmp);
+	}
+	K = step_size;
+	KMerge(nums,nmemb,size,cmp);
+}
+
 int main(){
   GenerateRandomNumers(nums,SIZE);
-  Display(nums,SIZE);
-  Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
-  cout<<"SORTED ORDER:\n";
-  Display(nums,SIZE);
+  //Display(nums,SIZE);
+	double s,e,t;
+
+	s=clock();
+	sort(nums,nums+SIZE);
+	e=clock();
+	t=((double)(e-s)/CLOCKS_PER_SEC);
+  cout<<"QuickSort time : "<<t<<endl;
+
+
+	// s=clock();
+  // Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
+	// e=clock();
+	// t=((double)(e-s)/CLOCKS_PER_SEC);
+  // cout<<"Funnelsort time : "<<t<<endl;
+
+
+	//cout<<"SORTED ORDER:\n";
+  //Display(nums,SIZE);
+	if(is_sorted(nums,nums+SIZE))
+		cout<<"SORTED :)\n";
+	else{
+		cout<<"NOT SORTED :(\n";
+		for(int i=1;i<SIZE;i++){
+			if(nums[i]<nums[i-1]){
+				cout<<nums[i-1]<<" "<<nums[i]<<endl;
+				break;
+			}
+		}
+	}
   return 0;
 }
