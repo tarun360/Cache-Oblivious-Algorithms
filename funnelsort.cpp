@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define SIZE 16
-#define MAXNUM 10
+#define SIZE 250
+#define MAXNUM 10000
 #define CACHELINE_SIZE 64
 int nums[SIZE];
 
@@ -37,7 +37,7 @@ struct Funnel {
 
 
 Funnel* FunnelCreate(void *in, void *out, size_t nmemb, size_t size, cmp_t cmp){
-  Funnel *funnel = (Funnel*)malloc(sizeof(funnel));
+  Funnel *funnel = (Funnel*)malloc(sizeof(Funnel));
 	funnel->in = in;
 	funnel->out = out;
 	funnel->nmemb = nmemb;
@@ -60,8 +60,7 @@ Funnel* FunnelCreate(void *in, void *out, size_t nmemb, size_t size, cmp_t cmp){
 void* FunnelPop(Funnel *funnel){
 	if (funnel->pos >= funnel->nmemb)
 		return NULL;
-	return (char*)funnel->out + funnel->pos*funnel->size;
-  funnel->pos++;
+	return (char*)funnel->out + funnel->pos++ * funnel->size;
 }
 
 void FunnelFill(Funnel *funnel){
