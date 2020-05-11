@@ -78,7 +78,7 @@ void FunnelFill(Funnel *funnel){
 	int size = funnel->size;
 
 	ptr[res] = FunnelPop(funnel->ptr[res]);
-	assert(ptr[res]);
+	assert(ptr[res]!=NULL);
 	res = !res;
 	while (i < funnel->nmemb) {
 		ptr[res] = FunnelPop(funnel->ptr[res]);
