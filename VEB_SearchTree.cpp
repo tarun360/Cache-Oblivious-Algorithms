@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define SIZE 16
+#define MAXNUM 1000000000
 
 struct TreeNode {
   int val;
@@ -71,27 +73,47 @@ void inorder(TreeNode* root){
   inorder(root->right);
 }
 
+void GenerateRandomNumers(vector<int> &nums, int size)
+{
+  assert(nums.size() <= MAXNUM);
+  map<int,bool> alreadypresnet;
+	srand(time(0));
+	for(int i=0;i<size;i++){
+    int randomnumber = rand()%MAXNUM;
+    while(alreadypresnet[randomnumber]==true)
+      randomnumber = rand()%MAXNUM;
+		nums[i] = randomnumber;
+    alreadypresnet[randomnumber] = true;
+	}
+  sort(nums.begin(),nums.end());
+}
+
+void Display(vector<int> &nums, int size){
+	for(int i = 0;i<size;i++)
+		cout<<nums[i]<<" ";
+  cout<<endl;
+}
+
 int main()
 {
-  int n,key;
-  cin>>n;
-  vector<int> nums(n);
-  for(int i=0;i<n;i++)
-    cin>>nums[i];
-  cin>>key;
-  TreeNode* root = sortedArrayToBST(nums,0,n-1);
+  vector<int> nums(SIZE);
+  GenerateRandomNumers(nums,SIZE);
+  int key = nums[SIZE/2];
+  Display(nums,SIZE);
+  cout<<key<<endl;
+  TreeNode* root = sortedArrayToBST(nums,0,SIZE-1);
   int levelmax = GetHeight(root)-1;
   vector<TreeNode*> VEBlayout;
   GetVEBLayout(root,0,levelmax,VEBlayout);
   vector<TreeNode> VEBarray;
-  vector<TreeNode*> address(n+1,NULL);
+  map<int,TreeNode*> address;
   for(auto it:VEBlayout){
     TreeNode temp(it->val);
     VEBarray.push_back(temp);
   }
   for(int i=0;i<VEBarray.size();i++)
     address[VEBarray[i].val] = &VEBarray[i];
-  for(int i=0;i<n;i++){
+  for(int i=0;i<SIZE;i++){
     if(VEBlayout[i]->left!=NULL){
       VEBarray[i].left = address[VEBlayout[i]->left->val];
     }

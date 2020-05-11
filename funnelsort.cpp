@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define SIZE 16
+#define MAXNUM 10
 #define CACHELINE_SIZE 64
 int nums[SIZE];
 
@@ -14,7 +15,7 @@ void GenerateRandomNumers(int *nums, int size)
 {
 	srand(time(0));
 	for(int i=0;i<size;i++){
-		nums[i] = rand()%10;
+		nums[i] = rand()%MAXNUM;
 	}
 }
 
