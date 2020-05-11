@@ -61,7 +61,6 @@ bool VEBSearch(TreeNode *root, int key, vector<TreeNode>& VEBarray){
     return VEBSearch(root->left,key,VEBarray);
   else
     return VEBSearch(root->right,key,VEBarray);
-
 }
 
 void inorder(TreeNode* root){
