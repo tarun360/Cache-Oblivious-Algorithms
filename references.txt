@@ -1,0 +1,1 @@
+Median Selection: http://people.csail.mit.edu/rivest/pubs/BFPRT73.pdf
