@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define SIZE 8519390
+#define SIZE 1000000
 #define MAXNUM 10000000
 #define CACHELINE_SIZE 64
-int nums[SIZE];
+int nums[SIZE],nums_copy[SIZE];
 int K=0;
 
 typedef int (*cmp_t)(const void *, const void *);
@@ -46,7 +46,6 @@ Funnel* FunnelCreate(void *in, void *out, size_t nmemb, size_t size, cmp_t cmp){
 	funnel->pos = 0;
 	funnel->cmp = cmp;
 
-  //if(size*nmemb > CACHELINE_SIZE){
 	if(nmemb > K){
 		int closest2 = (1<<(int)ilogb(nmemb));
 		size_t nmemb_left=0, nmemb_right=0;
@@ -74,7 +73,6 @@ void* FunnelPop(Funnel *funnel){
 
 void FunnelFill(Funnel *funnel){
 	if (funnel->ptr[0] == NULL) {
-		// qsort(funnel->in, funnel->nmemb, funnel->size, funnel->cmp);
 		memcpy(funnel->out, funnel->in, funnel->nmemb *funnel->size);
 		return;
 	}
@@ -106,11 +104,37 @@ void FunnelFill(Funnel *funnel){
 	}
 }
 
+void DeAllocateSpace(Funnel* funnel, bool left){
+	if(funnel->ptr[0]==NULL){
+		if(left==true){
+			free(funnel->out);
+			funnel->out=NULL;
+		}
+		free(funnel->ptr[0]);
+		funnel->ptr[0]=NULL;
+		free(funnel->ptr[1]);
+		funnel->ptr[1]=NULL;
+		return;
+	}
+	DeAllocateSpace(funnel->ptr[0],true);
+	DeAllocateSpace(funnel->ptr[1],false);
+
+	if(left==true){
+		free(funnel->out);
+		funnel->out=NULL;
+	}
+	free(funnel->ptr[0]);
+	funnel->ptr[0]=NULL;
+	free(funnel->ptr[1]);
+	funnel->ptr[1]=NULL;
+}
+
 void KMerge(void *nums_address, int nmemb, size_t size, cmp_t cmp){
 	void *out = malloc(size*nmemb);
 	Funnel* funnel = FunnelCreate(nums_address, out, nmemb, size, cmp);
 	FunnelFill(funnel);
 	memcpy(nums_address, out, size*nmemb);
+	DeAllocateSpace(funnel,true);
 }
 
 void Funnelsort(void *nums, int nmemb, size_t size, cmp_t cmp){
@@ -134,21 +158,22 @@ void Funnelsort(void *nums, int nmemb, size_t size, cmp_t cmp){
 
 int main(){
   GenerateRandomNumers(nums,SIZE);
+	for(int i=0;i<SIZE;i++)
+		nums_copy[i] = nums[i];
   //Display(nums,SIZE);
 	double s,e,t;
 
 	s=clock();
-	sort(nums,nums+SIZE);
+	qsort(nums_copy,SIZE,sizeof(nums[0]),intcmp);
 	e=clock();
 	t=((double)(e-s)/CLOCKS_PER_SEC);
   cout<<"QuickSort time : "<<t<<endl;
 
-
-	// s=clock();
-  // Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
-	// e=clock();
-	// t=((double)(e-s)/CLOCKS_PER_SEC);
-  // cout<<"Funnelsort time : "<<t<<endl;
+	s=clock();
+  Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
+	e=clock();
+	t=((double)(e-s)/CLOCKS_PER_SEC);
+  cout<<"Funnelsort time : "<<t<<endl;
 
 
 	//cout<<"SORTED ORDER:\n";
