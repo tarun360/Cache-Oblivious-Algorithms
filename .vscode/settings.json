@@ -1,3 +1,7 @@
 {
-    "git.autofetch": true
+    "git.autofetch": true,
+    "files.associations": {
+        "iostream": "cpp",
+        "ostream": "cpp"
+    }
 }
