@@ -1,8 +1,9 @@
+//sizes = 128,1024,131072,1048576,8388608
+
 #include <bits/stdc++.h>
 using namespace std;
-#define SIZE 1000000
+#define SIZE 128
 #define MAXNUM 10000000
-#define CACHELINE_SIZE 64
 int nums[SIZE],nums_copy[SIZE];
 int K=0;
 
@@ -169,25 +170,25 @@ int main(){
 	t=((double)(e-s)/CLOCKS_PER_SEC);
   cout<<"QuickSort time : "<<t<<endl;
 
-	s=clock();
-  Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
-	e=clock();
-	t=((double)(e-s)/CLOCKS_PER_SEC);
-  cout<<"Funnelsort time : "<<t<<endl;
+	// s=clock();
+  // Funnelsort(nums,SIZE,sizeof(nums[0]),intcmp);
+	// e=clock();
+	// t=((double)(e-s)/CLOCKS_PER_SEC);
+  // cout<<"Funnelsort time : "<<t<<endl;
 
 
 	//cout<<"SORTED ORDER:\n";
   //Display(nums,SIZE);
-	if(is_sorted(nums,nums+SIZE))
-		cout<<"SORTED :)\n";
-	else{
-		cout<<"NOT SORTED :(\n";
-		for(int i=1;i<SIZE;i++){
-			if(nums[i]<nums[i-1]){
-				cout<<nums[i-1]<<" "<<nums[i]<<endl;
-				break;
-			}
-		}
-	}
+	// if(is_sorted(nums,nums+SIZE))
+	// 	cout<<"SORTED :)\n";
+	// else{
+	// 	cout<<"NOT SORTED :(\n";
+	// 	for(int i=1;i<SIZE;i++){
+	// 		if(nums[i]<nums[i-1]){
+	// 			cout<<nums[i-1]<<" "<<nums[i]<<endl;
+	// 			break;
+	// 		}
+	// 	}
+	// }
   return 0;
 }
