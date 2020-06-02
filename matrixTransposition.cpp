@@ -40,7 +40,11 @@ int main(){
     fin>>n>>m;
     vector<int> matrix(n*m, 0), matrixT(n*m, 0);
     for(int i=0; i<n*m; i++) fin>>matrix[i];
+    clock_t time_req;
+    time_req = clock();
     Transposition(0, n, 0, m, n, m, matrix, matrixT);
+    cout<<"Dimension: "<<n<<" "<<m<<endl;
+    cout<<"Time taken: "<<(float)time_req/CLOCKS_PER_SEC<<"s"<<endl;
     fout<<m<<" "<<n<<endl<<endl;
     for(int i=0; i<n*m; i++){
         fout<<matrixT[i]<<" ";
@@ -48,6 +52,5 @@ int main(){
             fout<<endl;
         }        
     }
-    cout<<"Done!!"<<endl;
     return 0;
 }

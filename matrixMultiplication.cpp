@@ -1,6 +1,7 @@
 //Only for square matrices
 //Of dimensions of power of 3
 #include<bits/stdc++.h>
+#include<ctime>
 using namespace std;
 
 int dim;
@@ -9,9 +10,11 @@ vector<int> A, B, C;
 
 void peanomult(int phsA, int phsB, int phsC, int dim){
     if(dim == 1){
+        // cout<<"B"<<" "<<phsA<<" "<<phsB<<" "<<phsC<<" "<<a<<" "<<b<<" "<<c<<endl;
         C[c] += A[a]*B[b];
     }
     else{
+        // cout<<"Ä"<<" "<<phsA<<" "<<phsB<<" "<<phsC<<" "<<a<<" "<<b<<" "<<c<<endl;
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA, -phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; b += phsB;
@@ -24,17 +27,17 @@ void peanomult(int phsA, int phsB, int phsC, int dim){
         peanomult( phsA, -phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA,  phsB,  phsC, dim/3); b += phsB; c += phsC;
 
-        peanomult( phsA,  phsB,  phsC, dim/3); a -= phsA; c += phsC;
-        peanomult( phsA, -phsB,  phsC, dim/3); a -= phsA; c += phsC;
-        peanomult( phsA,  phsB,  phsC, dim/3); a -= phsA; b += phsB;
+        peanomult(-phsA,  phsB,  phsC, dim/3); a -= phsA; c += phsC;
+        peanomult(-phsA, -phsB,  phsC, dim/3); a -= phsA; c += phsC;
+        peanomult(-phsA,  phsB,  phsC, dim/3); a -= phsA; b += phsB;
 
-        peanomult( phsA,  phsB, -phsC, dim/3); a -= phsA; c -= phsC;
-        peanomult( phsA, -phsB, -phsC, dim/3); a -= phsA; c -= phsC;
-        peanomult( phsA,  phsB, -phsC, dim/3); a -= phsA; b += phsB;
+        peanomult(-phsA,  phsB, -phsC, dim/3); a -= phsA; c -= phsC;
+        peanomult(-phsA, -phsB, -phsC, dim/3); a -= phsA; c -= phsC;
+        peanomult(-phsA,  phsB, -phsC, dim/3); a -= phsA; b += phsB;
 
-        peanomult( phsA,  phsB,  phsC, dim/3); a -= phsA; c += phsC;
-        peanomult( phsA, -phsB,  phsC, dim/3); a -= phsA; c += phsC;
-        peanomult( phsA,  phsB,  phsC, dim/3); b += phsB; c += phsC;
+        peanomult(-phsA,  phsB,  phsC, dim/3); a -= phsA; c += phsC;
+        peanomult(-phsA, -phsB,  phsC, dim/3); a -= phsA; c += phsC;
+        peanomult(-phsA,  phsB,  phsC, dim/3); b += phsB; c += phsC;
 
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA, -phsB,  phsC, dim/3); a += phsA; c += phsC;
@@ -42,7 +45,7 @@ void peanomult(int phsA, int phsB, int phsC, int dim){
 
         peanomult( phsA,  phsB, -phsC, dim/3); a += phsA; c -= phsC;
         peanomult( phsA, -phsB, -phsC, dim/3); a += phsA; c -= phsC;
-        peanomult( phsA,  phsB, -phsC, dim/3); a += phsA; c += phsC;
+        peanomult( phsA,  phsB, -phsC, dim/3); a += phsA; b += phsB;
 
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA, -phsB,  phsC, dim/3); a += phsA; c += phsC;
@@ -65,7 +68,12 @@ int main(){
     for(int i=0; i<dim*dim; i++){
         fin>>B[i];
     }
+    cout<<"Dimension: "<<dim<<endl;
+    clock_t time_req;
+    time_req = clock();
     peanomult(1, 1, 1, dim);
+    time_req = clock()-time_req;
+    cout<<"Time taken: "<<(float)time_req/CLOCKS_PER_SEC<<"s"<<endl;
     fout<<C.size()<<endl;
     for(int i=0; i<C.size(); i++){
         fout<<C[i]<<" ";
