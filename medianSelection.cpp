@@ -64,13 +64,17 @@ double median(vector<double> &nums){
 }
 
 int main(){
+    ifstream fin;
+    ofstream fout;
+    fin.open("inputMedian.txt");
+    fout.open("outputMedian.txt");
     int n;
-    cin>>n;
+    fin>>n;
     vector<double> nums(n);
     for(int i=0; i<n; i++){
-        cin>>nums[i];
+        fin>>nums[i];
     }
     double med = median(nums);
-    cout<<med<<endl;
+    fout<<med<<endl;
     return 0;
 }
