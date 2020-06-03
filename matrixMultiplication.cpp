@@ -10,11 +10,9 @@ vector<int> A, B, C;
 
 void peanomult(int phsA, int phsB, int phsC, int dim){
     if(dim == 1){
-        // cout<<"B"<<" "<<phsA<<" "<<phsB<<" "<<phsC<<" "<<a<<" "<<b<<" "<<c<<endl;
         C[c] += A[a]*B[b];
     }
     else{
-        // cout<<"Ä"<<" "<<phsA<<" "<<phsB<<" "<<phsC<<" "<<a<<" "<<b<<" "<<c<<endl;
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA, -phsB,  phsC, dim/3); a += phsA; c += phsC;
         peanomult( phsA,  phsB,  phsC, dim/3); a += phsA; b += phsB;
