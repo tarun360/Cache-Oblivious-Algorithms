@@ -4,8 +4,8 @@ using namespace std;
 int main(){
     ifstream fin;
     ofstream fout;
-    fin.open("inputMatrixTranspose.txt");
-    fout.open("outputMatrixTranspose.txt");
+    fin.open("inputMatTrans.txt");
+    fout.open("outputMatTrans.txt");
     int n, m;
     fin>>n>>m;
     vector<vector<int>> A(n, vector<int>(m)), B(m, vector<int>(n));

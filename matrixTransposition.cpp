@@ -34,8 +34,8 @@ void Transposition(int x, int delx, int y, int dely, int N, int M, vector<int> &
 int main(){
     ifstream fin;
     ofstream fout;
-    fin.open("inputMatrixTransposition.txt");
-    fout.open("outputMatrixTransposition.txt");
+    fin.open("inputMatTrans.txt");
+    fout.open("outputMatTrans.txt");
     int n, m;
     fin>>n>>m;
     vector<int> matrix(n*m, 0), matrixT(n*m, 0);
